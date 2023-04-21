@@ -17,11 +17,13 @@ class DatabaseService {
       version: 1,
       onCreate: (db, version) {
         db.execute("""CREATE TABLE $tableFavouriteAnnouncement (
-                        id TEXT PRIMARY KEY
+                        id TEXT PRIMARY KEY,
+                        createdOn INTEGER
                     );                    
                     """);
         db.execute("""CREATE TABLE $tableFavouriteFreelanceProject (
-                        id TEXT PRIMARY KEY
+                        id TEXT PRIMARY KEY,
+                        createdOn INTEGER
                     );                    
                     """);
       },

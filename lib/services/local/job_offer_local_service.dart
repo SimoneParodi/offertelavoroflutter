@@ -34,6 +34,7 @@ class JobOfferLocalService {
     try {
       await database.insert(table, {
         'id': id,
+        'createdOn': DateTime.now().millisecondsSinceEpoch,
       });
     } catch (e) {
       throw LocalError(errorMessage: e.toString());
