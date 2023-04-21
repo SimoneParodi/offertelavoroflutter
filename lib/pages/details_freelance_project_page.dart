@@ -305,7 +305,7 @@ class DetailsFreelanceProjectPage extends StatelessWidget {
   Widget _noSelectedBody(BuildContext context) => Scaffold(
         appBar: AppBar(),
         body: const CourtesyWidget(
-          title: 'Nessun annuncio selezionato',
+          title: 'Nessun progetto selezionato',
           icon: FontAwesomeIcons.faceFrownOpen,
         ),
       );
