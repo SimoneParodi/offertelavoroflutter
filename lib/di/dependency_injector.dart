@@ -32,7 +32,6 @@ class DependecyInjector extends StatelessWidget {
             child: _repositories(
               child: _blocs(
                 child: child,
-                deviceWidth: boxConstraints.maxWidth,
               ),
             ),
           ),
@@ -93,15 +92,13 @@ class DependecyInjector extends StatelessWidget {
         child: child,
       );
 
-  Widget _blocs({required child, required deviceWidth}) => MultiBlocProvider(
+  Widget _blocs({required child}) => MultiBlocProvider(
         providers: [
           BlocProvider<DarkModeCubit>(
             create: (_) => DarkModeCubit(),
           ),
           BlocProvider<DeviceCubit>(
-            create: (context) => DeviceCubit(
-              width: deviceWidth,
-            ),
+            create: (_) => DeviceCubit(),
           ),
           BlocProvider<FavoriteModeCubit>(
             create: (_) => FavoriteModeCubit(),

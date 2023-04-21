@@ -22,11 +22,9 @@ class AnnouncementPage extends StatelessWidget {
     return BlocBuilder<AnnouncementBloc, AnnouncementState>(
       builder: (context, state) {
         if (state is FetchedAnnouncementState) {
-          return SafeArea(
-            child: _announcementsList(
-              context,
-              announcements: state.announcements,
-            ),
+          return _announcementsList(
+            context,
+            announcements: state.announcements,
           );
         } else if (state is NoAnnouncementState) {
           return _noAnnouncement(context);

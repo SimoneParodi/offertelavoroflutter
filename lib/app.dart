@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offertelavoroflutter/cubits/dark_mode_cubit.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/di/dependency_injector.dart';
 import 'package:offertelavoroflutter/pages/details_announcement_page.dart';
 import 'package:offertelavoroflutter/pages/details_freelance_project_page.dart';
@@ -21,7 +22,7 @@ class App extends StatelessWidget {
       child: BlocBuilder<DarkModeCubit, bool>(
         builder: (context, darkModeEnabled) {
           return MaterialApp(
-            title: 'Offerte Lavoro',
+            title: 'Offerte Flutter',
             debugShowCheckedModeBanner: false,
             themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
             theme: MyTheme.light(),

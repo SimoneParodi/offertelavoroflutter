@@ -24,29 +24,28 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MainPageViewControllerCubit(),
-      child: BlocBuilder<DeviceCubit, DeviceType>(
-        builder: (context, deviceType) {
-          if (deviceType == DeviceType.phone) {
-            return _offerList(context);
-          }
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          context.read<DeviceCubit>().select(width: boxConstraints.maxWidth);
           return Row(
             children: [
               Flexible(
                 flex: 4,
                 child: _offerList(context),
               ),
-              Flexible(
-                flex: 5,
-                child: BlocBuilder<MainPageViewControllerCubit,
-                    MainPageViewControllerState>(
-                  builder: (context, state) {
-                    if (state.page < 0.5) {
-                      return const DetailsAnnouncementPage();
-                    }
-                    return const DetailsFreelanceProjectPage();
-                  },
+              if (boxConstraints.maxWidth > DeviceSize.tablet)
+                Flexible(
+                  flex: 5,
+                  child: BlocBuilder<MainPageViewControllerCubit,
+                      MainPageViewControllerState>(
+                    builder: (context, state) {
+                      if (state.page < 0.5) {
+                        return const DetailsAnnouncementPage();
+                      }
+                      return const DetailsFreelanceProjectPage();
+                    },
+                  ),
                 ),
-              ),
             ],
           );
         },
@@ -68,6 +67,8 @@ class MainPage extends StatelessWidget {
   Widget _selector(BuildContext context) => Positioned(
         bottom: 15,
         child: SafeArea(
+          right: false,
+          left: false,
           child: Container(
             width: 230,
             height: 55,
@@ -78,17 +79,15 @@ class MainPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: MyInsets.s),
             child: BlocBuilder<DarkModeCubit, bool>(
               builder: (context, darkModeEnabled) {
-                final bubbleBackgroundColor =
-                    darkModeEnabled ? Colors.black : Colors.white;
                 final bubbleTextColor =
-                    darkModeEnabled ? Colors.white : Colors.black;
+                    Theme.of(context).colorScheme.onBackground;
                 final textColor = darkModeEnabled ? Colors.black : Colors.white;
                 return CustomPaint(
                   painter: BubbleIndicatorPainter(
                     pageController: context
                         .read<MainPageViewControllerCubit>()
                         .pageController,
-                    backgroundColor: bubbleBackgroundColor,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                   ),
                   child: BlocBuilder<MainPageViewControllerCubit,
                       MainPageViewControllerState>(

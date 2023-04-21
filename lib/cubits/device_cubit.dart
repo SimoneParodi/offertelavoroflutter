@@ -7,9 +7,10 @@ enum DeviceType {
 }
 
 class DeviceCubit extends Cubit<DeviceType> {
-  DeviceCubit({
+  DeviceCubit() : super(DeviceType.phone);
+
+  void select({
     required double width,
-  }) : super(
-          width < DeviceSize.tablet ? DeviceType.phone : DeviceType.table,
-        );
+  }) =>
+      emit(width < DeviceSize.tablet ? DeviceType.phone : DeviceType.table);
 }

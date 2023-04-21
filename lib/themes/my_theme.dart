@@ -22,6 +22,7 @@ class MyTheme {
     tertiary: Color.fromARGB(255, 239, 184, 108),
     error: Color(0xFFFFB4AB),
     shadow: Color(0xFF000000),
+    background: Color.fromARGB(255, 36, 39, 45),
   );
 
   static ThemeData light() {

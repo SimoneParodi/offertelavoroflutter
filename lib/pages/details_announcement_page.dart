@@ -46,20 +46,18 @@ class DetailsAnnouncementPage extends StatelessWidget {
     BuildContext context, {
     required Announcement announcement,
   }) =>
-      SafeArea(
-        child: Stack(
-          children: [
-            _announcement(
-              context,
-              announcement: announcement,
-            ),
-            _applyNowButton(
-              context,
-              howToAppy: announcement.howToApply,
-              announcementTitle: announcement.title,
-            )
-          ],
-        ),
+      Stack(
+        children: [
+          _announcement(
+            context,
+            announcement: announcement,
+          ),
+          _applyNowButton(
+            context,
+            howToAppy: announcement.howToApply,
+            announcementTitle: announcement.title,
+          )
+        ],
       );
 
   Widget _applyNowButton(

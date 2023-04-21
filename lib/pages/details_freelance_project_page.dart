@@ -43,20 +43,18 @@ class DetailsFreelanceProjectPage extends StatelessWidget {
     BuildContext context, {
     required FreelanceProject freelanceProject,
   }) =>
-      SafeArea(
-        child: Stack(
-          children: [
-            _freelanceProject(
-              context,
-              freelanceProject: freelanceProject,
-            ),
-            _applyNowButton(
-              context,
-              howToAppy: freelanceProject.howToApply,
-              freelanceProjectTitle: freelanceProject.title,
-            )
-          ],
-        ),
+      Stack(
+        children: [
+          _freelanceProject(
+            context,
+            freelanceProject: freelanceProject,
+          ),
+          _applyNowButton(
+            context,
+            howToAppy: freelanceProject.howToApply,
+            freelanceProjectTitle: freelanceProject.title,
+          )
+        ],
       );
 
   Widget _applyNowButton(

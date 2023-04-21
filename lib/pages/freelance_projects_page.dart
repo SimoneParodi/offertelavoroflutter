@@ -22,11 +22,9 @@ class FreelanceProjectPage extends StatelessWidget {
     return BlocBuilder<FreelanceProjectBloc, FreelanceProjectState>(
       builder: (context, state) {
         if (state is FetchedFreelanceProjectState) {
-          return SafeArea(
-            child: _freelanceProjectsList(
-              context,
-              freelanceProjects: state.freelanceProjects,
-            ),
+          return _freelanceProjectsList(
+            context,
+            freelanceProjects: state.freelanceProjects,
           );
         } else if (state is NoFreelanceProjectState) {
           return _noFreelanceProject(context);
