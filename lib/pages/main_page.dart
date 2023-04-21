@@ -4,9 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter/blocs/announcement/announcement_bloc.dart';
 import 'package:offertelavoroflutter/blocs/freelance_project/freelance_project_bloc.dart';
 import 'package:offertelavoroflutter/cubits/dark_mode_cubit.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/cubits/favorite_mode_cubit.dart';
 import 'package:offertelavoroflutter/cubits/main_page_controller/main_page_controller_cubit.dart';
 import 'package:offertelavoroflutter/misc/painter/bubble_indicator_painter.dart';
+import 'package:offertelavoroflutter/pages/details_announcement_page.dart';
+import 'package:offertelavoroflutter/pages/details_freelance_project_page.dart';
 import 'package:offertelavoroflutter/pages/freelance_projects_page.dart';
 import 'package:offertelavoroflutter/pages/announcements_page.dart';
 import 'package:offertelavoroflutter/themes/design_system.dart';
@@ -21,20 +24,46 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MainPageViewControllerCubit(),
-      child: Builder(
-        builder: (context) => Scaffold(
-          appBar: _appBar(context),
-          body: Stack(
-            alignment: Alignment.center,
+      child: BlocBuilder<DeviceCubit, DeviceType>(
+        builder: (context, deviceType) {
+          if (deviceType == DeviceType.phone) {
+            return _offerList(context);
+          }
+          return Row(
             children: [
-              _pageView(context),
-              _selector(context),
+              Flexible(
+                flex: 4,
+                child: _offerList(context),
+              ),
+              Flexible(
+                flex: 5,
+                child: BlocBuilder<MainPageViewControllerCubit,
+                    MainPageViewControllerState>(
+                  builder: (context, state) {
+                    if (state.page < 0.5) {
+                      return const DetailsAnnouncementPage();
+                    }
+                    return const DetailsFreelanceProjectPage();
+                  },
+                ),
+              ),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
+
+  Widget _offerList(BuildContext context) => Scaffold(
+        appBar: _appBar(context),
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            _pageView(context),
+            _selector(context),
+          ],
+        ),
+      );
 
   Widget _selector(BuildContext context) => Positioned(
         bottom: 15,
@@ -62,7 +91,7 @@ class MainPage extends StatelessWidget {
                     backgroundColor: bubbleBackgroundColor,
                   ),
                   child: BlocBuilder<MainPageViewControllerCubit,
-                      MainPageControllerState>(
+                      MainPageViewControllerState>(
                     builder: (context, state) => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

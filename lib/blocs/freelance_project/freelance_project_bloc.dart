@@ -109,7 +109,7 @@ class FreelanceProjectBloc
     );
   }
 
-  void toogleFavoriteAnnouncement({
+  void toogleFavoriteFreelanceProject({
     required String id,
   }) =>
       add(

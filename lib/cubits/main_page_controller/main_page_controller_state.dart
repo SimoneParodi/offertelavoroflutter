@@ -1,10 +1,10 @@
 part of 'main_page_controller_cubit.dart';
 
-class MainPageControllerState extends Equatable {
+class MainPageViewControllerState extends Equatable {
   final double offset;
   final double page;
 
-  const MainPageControllerState({
+  const MainPageViewControllerState({
     required this.offset,
     required this.page,
   });

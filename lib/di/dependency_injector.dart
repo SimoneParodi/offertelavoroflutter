@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:offertelavoroflutter/blocs/freelance_project/freelance_project_bloc.dart';
 import 'package:offertelavoroflutter/blocs/announcement/announcement_bloc.dart';
 import 'package:offertelavoroflutter/cubits/dark_mode_cubit.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/cubits/favorite_mode_cubit.dart';
 import 'package:offertelavoroflutter/cubits/selected_announcement_cubit.dart';
 import 'package:offertelavoroflutter/cubits/selected_freelance_project_cubit.dart';
@@ -24,15 +25,19 @@ class DependecyInjector extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => _mappers(
-        child: _providers(
-          child: _repositories(
-            child: _blocs(
-              child: child,
+  Widget build(BuildContext context) =>
+      LayoutBuilder(builder: (context, boxConstraints) {
+        return _mappers(
+          child: _providers(
+            child: _repositories(
+              child: _blocs(
+                child: child,
+                deviceWidth: boxConstraints.maxWidth,
+              ),
             ),
           ),
-        ),
-      );
+        );
+      });
 
   Widget _mappers({
     required child,
@@ -88,13 +93,15 @@ class DependecyInjector extends StatelessWidget {
         child: child,
       );
 
-  Widget _blocs({
-    required child,
-  }) =>
-      MultiBlocProvider(
+  Widget _blocs({required child, required deviceWidth}) => MultiBlocProvider(
         providers: [
           BlocProvider<DarkModeCubit>(
             create: (_) => DarkModeCubit(),
+          ),
+          BlocProvider<DeviceCubit>(
+            create: (context) => DeviceCubit(
+              width: deviceWidth,
+            ),
           ),
           BlocProvider<FavoriteModeCubit>(
             create: (_) => FavoriteModeCubit(),

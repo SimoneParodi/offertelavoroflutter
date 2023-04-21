@@ -33,18 +33,20 @@ class TagWidget extends StatelessWidget {
               size: 18,
               color: color,
             ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: icon == null ? MyInsets.zero : MyInsets.xs,
-            ),
-            child: Text(
-              text,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w600,
-                  ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: icon == null ? MyInsets.zero : MyInsets.xs,
+              ),
+              child: Text(
+                text,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.w600,
+                    ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
           ),
         ],

@@ -22,3 +22,7 @@ class MyRadius {
   static const double l = 16.0;
   static const double xl = 20.0;
 }
+
+class DeviceSize {
+  static const double tablet = 600.0;
+}

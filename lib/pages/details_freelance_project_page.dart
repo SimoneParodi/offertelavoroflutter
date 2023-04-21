@@ -9,8 +9,8 @@ import 'package:offertelavoroflutter/models/freelance_project.dart';
 import 'package:offertelavoroflutter/services/share_service.dart';
 import 'package:offertelavoroflutter/services/utils.dart';
 import 'package:offertelavoroflutter/themes/design_system.dart';
+import 'package:offertelavoroflutter/widgets/courtesy_widget.dart';
 import 'package:offertelavoroflutter/widgets/details_announcement_page/icon_title_widget.dart';
-import 'package:offertelavoroflutter/widgets/loading/circular_loading_widget.dart';
 
 class DetailsFreelanceProjectPage extends StatelessWidget {
   static const route = '/job/freelance_project/details';
@@ -35,10 +35,7 @@ class DetailsFreelanceProjectPage extends StatelessWidget {
               ),
             );
           }
-          return Scaffold(
-            appBar: AppBar(),
-            body: const CircularLoadingWidget(),
-          );
+          return _noSelectedBody(context);
         },
       );
 
@@ -284,7 +281,9 @@ class DetailsFreelanceProjectPage extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              context.read<FreelanceProjectBloc>().toogleFavoriteAnnouncement(
+              context
+                  .read<FreelanceProjectBloc>()
+                  .toogleFavoriteFreelanceProject(
                     id: freelanceProject.id,
                   );
               context.read<SelectedFreelanceProjectCubit>().select(
@@ -301,5 +300,13 @@ class DetailsFreelanceProjectPage extends StatelessWidget {
             ),
           ),
         ],
+      );
+
+  Widget _noSelectedBody(BuildContext context) => Scaffold(
+        appBar: AppBar(),
+        body: const CourtesyWidget(
+          title: 'Nessun annuncio selezionato',
+          icon: FontAwesomeIcons.faceFrownOpen,
+        ),
       );
 }

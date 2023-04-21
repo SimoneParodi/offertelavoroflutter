@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offertelavoroflutter/blocs/announcement/announcement_bloc.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/cubits/selected_announcement_cubit.dart';
 import 'package:offertelavoroflutter/extension/string_extension.dart';
 import 'package:offertelavoroflutter/models/announcement.dart';
@@ -22,17 +23,29 @@ class AnnouncementItem extends StatelessWidget {
   factory AnnouncementItem.shimmer() =>
       const AnnouncementItem(announcement: null);
 
-  void onFavorite(BuildContext context) => context
-      .read<AnnouncementBloc>()
-      .toogleFavoriteAnnouncement(id: announcement!.id);
+  void onFavorite(BuildContext context) {
+    context
+        .read<AnnouncementBloc>()
+        .toogleFavoriteAnnouncement(id: announcement!.id);
+    context.read<SelectedAnnouncementCubit>().select(
+          announcement!.copyWith(
+            favorite: !announcement!.favorite,
+          ),
+        );
+  }
 
   void onShare() => ShareService.share(
         announcement!.url,
         subject: announcement!.name,
       );
-  void onTap(BuildContext context) {
+  void onTap(
+    BuildContext context, {
+    required bool isPhone,
+  }) {
     context.read<SelectedAnnouncementCubit>().select(announcement!);
-    Navigator.of(context).pushNamed(DetailsAnnouncementPage.route);
+    if (isPhone) {
+      Navigator.of(context).pushNamed(DetailsAnnouncementPage.route);
+    }
   }
 
   @override
@@ -40,12 +53,19 @@ class AnnouncementItem extends StatelessWidget {
       ? JobOfferItem.shimmer(
           child: _shimmerBody(),
         )
-      : JobOfferItem(
-          onTap: () => onTap(context),
-          onShare: () => onShare(),
-          onFavorite: () => onFavorite(context),
-          isFavorite: announcement!.favorite,
-          child: _body(context),
+      : BlocBuilder<DeviceCubit, DeviceType>(
+          builder: (context, deviceType) {
+            return JobOfferItem(
+              onTap: () => onTap(
+                context,
+                isPhone: deviceType == DeviceType.phone,
+              ),
+              onShare: () => onShare(),
+              onFavorite: () => onFavorite(context),
+              isFavorite: announcement!.favorite,
+              child: _body(context),
+            );
+          },
         );
 
   Widget _body(BuildContext context) => Column(

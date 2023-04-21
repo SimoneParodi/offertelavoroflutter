@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter/blocs/freelance_project/freelance_project_bloc.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/cubits/selected_freelance_project_cubit.dart';
 import 'package:offertelavoroflutter/extension/string_extension.dart';
 import 'package:offertelavoroflutter/models/freelance_project.dart';
@@ -23,17 +24,29 @@ class FreelanceProjectItem extends StatelessWidget {
   factory FreelanceProjectItem.shimmer() =>
       const FreelanceProjectItem(freelanceProject: null);
 
-  void onFavorite(BuildContext context) => context
-      .read<FreelanceProjectBloc>()
-      .toogleFavoriteAnnouncement(id: freelanceProject!.id);
+  void onFavorite(BuildContext context) {
+    context
+        .read<FreelanceProjectBloc>()
+        .toogleFavoriteFreelanceProject(id: freelanceProject!.id);
+    context.read<SelectedFreelanceProjectCubit>().select(
+          freelanceProject!.copyWith(
+            favorite: !freelanceProject!.favorite,
+          ),
+        );
+  }
 
   void onShare() => ShareService.share(
         freelanceProject!.url,
         subject: freelanceProject!.title,
       );
-  void onTap(BuildContext context) {
+  void onTap(
+    BuildContext context, {
+    required bool isPhone,
+  }) {
     context.read<SelectedFreelanceProjectCubit>().select(freelanceProject!);
-    Navigator.of(context).pushNamed(DetailsFreelanceProjectPage.route);
+    if (isPhone) {
+      Navigator.of(context).pushNamed(DetailsFreelanceProjectPage.route);
+    }
   }
 
   @override
@@ -41,12 +54,19 @@ class FreelanceProjectItem extends StatelessWidget {
       ? JobOfferItem.shimmer(
           child: _shimmerBody(),
         )
-      : JobOfferItem(
-          onTap: () => onTap(context),
-          onShare: () => onShare(),
-          onFavorite: () => onFavorite(context),
-          isFavorite: freelanceProject!.favorite,
-          child: _body(context),
+      : BlocBuilder<DeviceCubit, DeviceType>(
+          builder: (context, deviceType) {
+            return JobOfferItem(
+              onTap: () => onTap(
+                context,
+                isPhone: deviceType == DeviceType.phone,
+              ),
+              onShare: () => onShare(),
+              onFavorite: () => onFavorite(context),
+              isFavorite: freelanceProject!.favorite,
+              child: _body(context),
+            );
+          },
         );
 
   Widget _body(BuildContext context) => Column(

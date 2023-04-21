@@ -10,8 +10,8 @@ import 'package:offertelavoroflutter/models/formatted_text.dart';
 import 'package:offertelavoroflutter/models/announcement.dart';
 import 'package:offertelavoroflutter/services/launch_url_service.dart';
 import 'package:offertelavoroflutter/themes/design_system.dart';
+import 'package:offertelavoroflutter/widgets/courtesy_widget.dart';
 import 'package:offertelavoroflutter/widgets/details_announcement_page/icon_title_widget.dart';
-import 'package:offertelavoroflutter/widgets/loading/circular_loading_widget.dart';
 import 'package:offertelavoroflutter/widgets/tag_widget.dart';
 import 'package:offertelavoroflutter/extension/string_extension.dart';
 
@@ -38,10 +38,7 @@ class DetailsAnnouncementPage extends StatelessWidget {
               ),
             );
           }
-          return Scaffold(
-            appBar: AppBar(),
-            body: const CircularLoadingWidget(),
-          );
+          return _noSelectedBody(context);
         },
       );
 
@@ -313,5 +310,13 @@ class DetailsAnnouncementPage extends StatelessWidget {
         icon: FontAwesomeIcons.calendar,
         subTitle: date,
         title: 'Pubblicato il',
+      );
+
+  Widget _noSelectedBody(BuildContext context) => Scaffold(
+        appBar: AppBar(),
+        body: const CourtesyWidget(
+          title: 'Nessun annuncio selezionato',
+          icon: FontAwesomeIcons.faceFrownOpen,
+        ),
       );
 }
