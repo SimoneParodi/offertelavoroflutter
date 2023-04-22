@@ -89,7 +89,7 @@ class AnnouncementPage extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CourtesyWidget.networkError(),
+            CourtesyWidget.noConnectivity(),
             TextButton(
               onPressed: () => context.read<AnnouncementBloc>().onFetch(),
               child: const Text(

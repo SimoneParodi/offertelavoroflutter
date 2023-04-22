@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offertelavoroflutter/cubits/dark_mode_cubit.dart';
-import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/di/dependency_injector.dart';
 import 'package:offertelavoroflutter/pages/details_announcement_page.dart';
 import 'package:offertelavoroflutter/pages/details_freelance_project_page.dart';

@@ -18,7 +18,7 @@ class CourtesyWidget extends StatelessWidget {
 
   factory CourtesyWidget.networkError() => const CourtesyWidget(
         title: 'Ops!',
-        subTitle: 'Errore durante la connessione a internet',
+        subTitle: 'Errore durante il caricamento degli annunci',
         icon: FontAwesomeIcons.circleExclamation,
         isError: true,
       );
@@ -32,6 +32,12 @@ class CourtesyWidget extends StatelessWidget {
   factory CourtesyWidget.repositoryError() => const CourtesyWidget(
         title: 'Ops!',
         subTitle: 'Errore interno',
+        icon: FontAwesomeIcons.circleExclamation,
+        isError: true,
+      );
+  factory CourtesyWidget.noConnectivity() => const CourtesyWidget(
+        title: 'Ops!',
+        subTitle: 'Nessuna connessione a internet',
         icon: FontAwesomeIcons.circleExclamation,
         isError: true,
       );

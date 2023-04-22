@@ -89,7 +89,7 @@ class FreelanceProjectPage extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CourtesyWidget.networkError(),
+            CourtesyWidget.noConnectivity(),
             TextButton(
               onPressed: () => context.read<FreelanceProjectBloc>().onFetch(),
               child: const Text(
