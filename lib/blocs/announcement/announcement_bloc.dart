@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
@@ -32,6 +33,14 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
     emit(FetchingAnnouncementState());
     List<Announcement>? jobAnnouncements;
     try {
+      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+        emit(
+          const ErrorAnnouncementState(
+            type: ErrorType.noConnectivity,
+          ),
+        );
+        return;
+      }
       if (event.fetchFavorite) {
         jobAnnouncements = await jobOfferRepository.favoriteAnnouncements();
       } else {
@@ -41,7 +50,7 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
       logger.e('${e.statusCode} ${e.reasonPhrase}');
       emit(
         const ErrorAnnouncementState(
-          type: ErrorType.nwtwork,
+          type: ErrorType.newtwork,
         ),
       );
     } on LocalError catch (e) {

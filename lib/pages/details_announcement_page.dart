@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter/blocs/announcement/announcement_bloc.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/cubits/selected_announcement_cubit.dart';
 import 'package:offertelavoroflutter/extension/date_time_extension.dart';
 import 'package:offertelavoroflutter/services/share_service.dart';
@@ -46,18 +47,27 @@ class DetailsAnnouncementPage extends StatelessWidget {
     BuildContext context, {
     required Announcement announcement,
   }) =>
-      Stack(
-        children: [
-          _announcement(
-            context,
-            announcement: announcement,
-          ),
-          _applyNowButton(
-            context,
-            howToAppy: announcement.howToApply,
-            announcementTitle: announcement.title,
-          )
-        ],
+      BlocBuilder<DeviceCubit, DeviceType>(
+        builder: (context, deviceType) {
+          return GestureDetector(
+            onTap: deviceType == DeviceType.table
+                ? () => Navigator.of(context).pushNamed(route)
+                : null,
+            child: Stack(
+              children: [
+                _announcement(
+                  context,
+                  announcement: announcement,
+                ),
+                _applyNowButton(
+                  context,
+                  howToAppy: announcement.howToApply,
+                  announcementTitle: announcement.title,
+                )
+              ],
+            ),
+          );
+        },
       );
 
   Widget _applyNowButton(

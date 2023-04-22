@@ -10,8 +10,9 @@ import 'package:offertelavoroflutter/themes/my_theme.dart';
 
 enum ErrorType {
   local,
-  nwtwork,
+  newtwork,
   repository,
+  noConnectivity,
 }
 
 class Utils {
@@ -54,13 +55,20 @@ class Utils {
                   children: applyWithEmail
                       ? null
                       : [
-                          TextSpan(
-                            text: formattedText.url,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.tertiary,
-                              decoration: TextDecoration.underline,
-                              decorationColor:
-                                  Theme.of(context).colorScheme.tertiary,
+                          WidgetSpan(
+                            child: GestureDetector(
+                              onTap: () => LaunchUrlService.launchWebUrl(
+                                formattedText.url!,
+                              ),
+                              child: Text(
+                                formattedText.url!,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor:
+                                      Theme.of(context).colorScheme.tertiary,
+                                ),
+                              ),
                             ),
                           ),
                         ],

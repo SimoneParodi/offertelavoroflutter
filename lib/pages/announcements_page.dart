@@ -81,10 +81,23 @@ class AnnouncementPage extends StatelessWidget {
     switch (errorType) {
       case ErrorType.local:
         return CourtesyWidget.localError();
-      case ErrorType.nwtwork:
+      case ErrorType.newtwork:
         return CourtesyWidget.networkError();
       case ErrorType.repository:
         return CourtesyWidget.repositoryError();
+      case ErrorType.noConnectivity:
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CourtesyWidget.networkError(),
+            TextButton(
+              onPressed: () => context.read<AnnouncementBloc>().onFetch(),
+              child: const Text(
+                'Ricarica',
+              ),
+            ),
+          ],
+        );
     }
   }
 

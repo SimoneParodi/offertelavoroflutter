@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
@@ -32,8 +33,17 @@ class FreelanceProjectBloc
   FutureOr<void> _onFetch(FetchFreelanceProjectEvent event,
       Emitter<FreelanceProjectState> emit) async {
     emit(FetchingFreelanceProjectState());
+
     List<FreelanceProject>? jobOffers;
     try {
+      if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
+        emit(
+          const ErrorFreelanceProjectState(
+            type: ErrorType.noConnectivity,
+          ),
+        );
+        return;
+      }
       if (event.fetchFavorite) {
         jobOffers = await jobOfferRepository.favoriteFreelanceProjects();
       } else {
@@ -42,7 +52,7 @@ class FreelanceProjectBloc
     } on NetworkError catch (e) {
       logger.e('${e.statusCode} ${e.reasonPhrase}');
       emit(
-        const ErrorFreelanceProjectState(type: ErrorType.nwtwork),
+        const ErrorFreelanceProjectState(type: ErrorType.newtwork),
       );
     } on LocalError catch (e) {
       logger.e(e.errorMessage);

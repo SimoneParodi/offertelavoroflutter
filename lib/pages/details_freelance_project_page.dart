@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter/blocs/freelance_project/freelance_project_bloc.dart';
+import 'package:offertelavoroflutter/cubits/device_cubit.dart';
 import 'package:offertelavoroflutter/cubits/selected_freelance_project_cubit.dart';
 import 'package:offertelavoroflutter/extension/date_time_extension.dart';
 import 'package:offertelavoroflutter/models/formatted_text.dart';
@@ -43,18 +44,27 @@ class DetailsFreelanceProjectPage extends StatelessWidget {
     BuildContext context, {
     required FreelanceProject freelanceProject,
   }) =>
-      Stack(
-        children: [
-          _freelanceProject(
-            context,
-            freelanceProject: freelanceProject,
-          ),
-          _applyNowButton(
-            context,
-            howToAppy: freelanceProject.howToApply,
-            freelanceProjectTitle: freelanceProject.title,
-          )
-        ],
+      BlocBuilder<DeviceCubit, DeviceType>(
+        builder: (context, deviceType) {
+          return GestureDetector(
+            onTap: deviceType == DeviceType.table
+                ? () => Navigator.of(context).pushNamed(route)
+                : null,
+            child: Stack(
+              children: [
+                _freelanceProject(
+                  context,
+                  freelanceProject: freelanceProject,
+                ),
+                _applyNowButton(
+                  context,
+                  howToAppy: freelanceProject.howToApply,
+                  freelanceProjectTitle: freelanceProject.title,
+                )
+              ],
+            ),
+          );
+        },
       );
 
   Widget _applyNowButton(

@@ -33,19 +33,7 @@ class MainPage extends StatelessWidget {
                 flex: 4,
                 child: _offerList(context),
               ),
-              if (boxConstraints.maxWidth > DeviceSize.tablet)
-                Flexible(
-                  flex: 5,
-                  child: BlocBuilder<MainPageViewControllerCubit,
-                      MainPageViewControllerState>(
-                    builder: (context, state) {
-                      if (state.page < 0.5) {
-                        return const DetailsAnnouncementPage();
-                      }
-                      return const DetailsFreelanceProjectPage();
-                    },
-                  ),
-                ),
+              if (boxConstraints.maxWidth > DeviceSize.tablet) _details(context)
             ],
           );
         },
@@ -61,6 +49,19 @@ class MainPage extends StatelessWidget {
             _pageView(context),
             _selector(context),
           ],
+        ),
+      );
+
+  Widget _details(BuildContext context) => Flexible(
+        flex: 5,
+        child: BlocBuilder<MainPageViewControllerCubit,
+            MainPageViewControllerState>(
+          builder: (context, state) {
+            if (state.page < 0.5) {
+              return const DetailsAnnouncementPage();
+            }
+            return const DetailsFreelanceProjectPage();
+          },
         ),
       );
 
@@ -179,9 +180,14 @@ class MainPage extends StatelessWidget {
 
   Widget _toogleFavoriteMode(BuildContext context) => IconButton(
         onPressed: () {
-          context.read<FavoriteModeCubit>().toogle();
-          context.read<AnnouncementBloc>().onFetch();
-          context.read<FreelanceProjectBloc>().onFetch();
+          if (context.read<AnnouncementBloc>().state
+                  is! FetchingAnnouncementState &&
+              context.read<FreelanceProjectBloc>().state
+                  is! FetchingFreelanceProjectState) {
+            context.read<FavoriteModeCubit>().toogle();
+            context.read<AnnouncementBloc>().onFetch();
+            context.read<FreelanceProjectBloc>().onFetch();
+          }
         },
         icon: BlocBuilder<FavoriteModeCubit, bool>(
           builder: (context, favoriteMode) => Icon(
